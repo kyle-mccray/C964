@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="34851148-7d74-4e5e-924e-f1254f8c6b2a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ploty/plotly-latest.min.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hello.py" beforeDir="false" afterPath="$PROJECT_DIR$/hello.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/data.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/data.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/homepage.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/homepage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/Flask-1.1.2.dist-info/INSTALLER" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/Flask-1.1.2.dist-info/LICENSE.rst" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/Flask-1.1.2.dist-info/METADATA" beforeDir="false" />
@@ -655,13 +660,23 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="jdk.selected.PYTHON_MODULE" value="Python 3.8" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/ploty" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
-  <component name="RunManager">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ploty" />
+      <recent name="$PROJECT_DIR$/js" />
+      <recent name="$PROJECT_DIR$/static" />
+    </key>
+  </component>
+  <component name="RunManager" selected="JavaScript Debug.homepage.html">
+    <configuration name="homepage.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/webserver/myproject/templates/homepage.html" useBuiltInWebServerPort="true">
+      <method v="2" />
+    </configuration>
     <configuration name="myproject" type="PythonConfigurationType" factoryName="Python">
       <module name="myproject" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -684,6 +699,11 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JavaScript Debug.homepage.html" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ServiceViewManager">
     <option name="viewStates">
@@ -708,43 +728,103 @@
       <option name="presentableId" value="Default" />
       <updated>1598461444375</updated>
       <workItem from="1598461447047" duration="10128000" />
-      <workItem from="1598547745072" duration="1273000" />
+      <workItem from="1598547745072" duration="8556000" />
     </task>
+    <task id="LOCAL-00001" summary="Removed the venv from git. Added requirements.txt">
+      <created>1598549537788</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1598549537788</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="requirements.txt" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Removed the venv from git. Added requirements.txt" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed the venv from git. Added requirements.txt" />
+  </component>
   <component name="WindowStateProjectService">
-    <state x="1621" y="270" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598462930702">
-      <screen x="0" y="0" width="2560" height="1040" />
+    <state x="1216" y="300" width="649" height="623" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598564606125">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="1621" y="270" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1598462930702" />
-    <state width="451" height="262" key="GridCell.Tab.0.bottom" timestamp="1598549062051">
+    <state x="1216" y="300" width="649" height="623" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1598564606125" />
+    <state x="438" y="80" width="1033" height="954" key="CommitChangelistDialog2" timestamp="1598549537470">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="438" y="80" width="1033" height="954" key="CommitChangelistDialog2/0.27.1920.1053@0.27.1920.1053" timestamp="1598549537470" />
+    <state x="688" y="242" width="524" height="637" key="FileChooserDialogImpl" timestamp="1598561075368">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="688" y="242" width="524" height="637" key="FileChooserDialogImpl/0.27.1920.1053@0.27.1920.1053" timestamp="1598561075368" />
+    <state width="931" height="136" key="GridCell.Tab.0.bottom" timestamp="1598565786390">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1435" height="150" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1598475436988" />
-    <state width="451" height="262" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1598549062051" />
-    <state width="451" height="262" key="GridCell.Tab.0.center" timestamp="1598549062050">
+    <state width="931" height="136" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1598565786390" />
+    <state width="931" height="136" key="GridCell.Tab.0.center" timestamp="1598565786387">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1435" height="150" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1598475436988" />
-    <state width="451" height="262" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1598549062050" />
-    <state width="451" height="262" key="GridCell.Tab.0.left" timestamp="1598549062050">
+    <state width="931" height="136" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1598565786387" />
+    <state width="931" height="136" key="GridCell.Tab.0.left" timestamp="1598565786386">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1435" height="150" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1598475436988" />
-    <state width="451" height="262" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1598549062050" />
-    <state width="451" height="262" key="GridCell.Tab.0.right" timestamp="1598549062051">
+    <state width="931" height="136" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1598565786386" />
+    <state width="931" height="136" key="GridCell.Tab.0.right" timestamp="1598565786388">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1435" height="150" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1598475436988" />
-    <state width="451" height="262" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1598549062051" />
+    <state width="931" height="136" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1598565786388" />
+    <state width="931" height="136" key="GridCell.Tab.1.bottom" timestamp="1598565786394">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="931" height="136" key="GridCell.Tab.1.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1598565786394" />
+    <state width="931" height="136" key="GridCell.Tab.1.center" timestamp="1598565786393">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="931" height="136" key="GridCell.Tab.1.center/0.27.1920.1053@0.27.1920.1053" timestamp="1598565786393" />
+    <state width="931" height="136" key="GridCell.Tab.1.left" timestamp="1598565786391">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="931" height="136" key="GridCell.Tab.1.left/0.27.1920.1053@0.27.1920.1053" timestamp="1598565786391" />
+    <state width="931" height="136" key="GridCell.Tab.1.right" timestamp="1598565786394">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="931" height="136" key="GridCell.Tab.1.right/0.27.1920.1053@0.27.1920.1053" timestamp="1598565786394" />
+    <state width="931" height="136" key="GridCell.Tab.2.bottom" timestamp="1598565786397">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="931" height="136" key="GridCell.Tab.2.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1598565786397" />
+    <state width="931" height="136" key="GridCell.Tab.2.center" timestamp="1598565786396">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="931" height="136" key="GridCell.Tab.2.center/0.27.1920.1053@0.27.1920.1053" timestamp="1598565786396" />
+    <state width="931" height="136" key="GridCell.Tab.2.left" timestamp="1598565786395">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="931" height="136" key="GridCell.Tab.2.left/0.27.1920.1053@0.27.1920.1053" timestamp="1598565786395" />
+    <state width="931" height="136" key="GridCell.Tab.2.right" timestamp="1598565786396">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state width="931" height="136" key="GridCell.Tab.2.right/0.27.1920.1053@0.27.1920.1053" timestamp="1598565786396" />
     <state x="651" y="126" width="1269" height="912" key="SettingsEditor" timestamp="1598548648904">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="1299" y="98" key="SettingsEditor/0.0.2560.1040@0.0.2560.1040" timestamp="1598474654078" />
     <state x="651" y="126" width="1269" height="912" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1598548648904" />
+    <state x="455" y="226" width="1000" height="661" key="Vcs.Push.Dialog.v2" timestamp="1598549549373">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="455" y="226" width="1000" height="661" key="Vcs.Push.Dialog.v2/0.27.1920.1053@0.27.1920.1053" timestamp="1598549549373" />
     <state x="1551" y="220" width="737" height="606" key="find.popup" timestamp="1598466095450">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>

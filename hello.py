@@ -15,8 +15,8 @@ def login():
     if request.method == 'POST':
         print("Username: " + request.form['username'])
         print("Password: " + request.form['password'])
-        return redirect(url_for("homepage"))
-    return render_template("login.html")
+        return redirect(url_for('homepage'))
+    return render_template('login.html')
 
 @app.route('/logout')
 def logout():
@@ -32,4 +32,4 @@ def data():
 
 @app.route('/homepage')
 def homepage():
-    return render_template("homepage.html")
+    return render_template('homepage.html')
