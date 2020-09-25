@@ -14,7 +14,7 @@ import ml_main
 
 app = Flask(__name__)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run()
 
 # Set the secret key to some random bytes. Keep this really secret!
