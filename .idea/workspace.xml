@@ -2,15 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="34851148-7d74-4e5e-924e-f1254f8c6b2a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/myproject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/myproject.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db_connection.py" beforeDir="false" afterPath="$PROJECT_DIR$/db_connection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/data.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/data.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/homepage.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/homepage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip-19.2.3.dist-info/INSTALLER" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip-19.2.3.dist-info/LICENSE.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/venv/Lib/site-packages/pip-19.2.3.dist-info/METADATA" beforeDir="false" />
@@ -347,7 +338,7 @@
       <workItem from="1600785380764" duration="6026000" />
       <workItem from="1600894470479" duration="20834000" />
       <workItem from="1601049139330" duration="3252000" />
-      <workItem from="1601059788352" duration="321000" />
+      <workItem from="1601059788352" duration="598000" />
     </task>
     <task id="LOCAL-00001" summary="Removed the venv from git. Added requirements.txt">
       <created>1598549537788</created>
@@ -356,7 +347,14 @@
       <option name="project" value="LOCAL" />
       <updated>1598549537788</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="added ml, ui finished">
+      <created>1601060373276</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1601060373276</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -367,21 +365,27 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Removed the venv from git. Added requirements.txt" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed the venv from git. Added requirements.txt" />
+    <MESSAGE value="added ml, ui finished" />
+    <option name="LAST_COMMIT_MESSAGE" value="added ml, ui finished" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1408" y="182" key="#Template_Data_Languages" timestamp="1600893005600">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
     <state x="1408" y="182" key="#Template_Data_Languages/0.0.2560.1040@0.0.2560.1040" timestamp="1600893005600" />
+    <state x="1010" y="326" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1601060467947">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state x="1010" y="326" key="#com.intellij.fileTypes.FileTypeChooser/0.0.2560.1040@0.0.2560.1040" timestamp="1601060467947" />
     <state x="1216" y="300" width="649" height="623" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598564606125">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="1621" y="270" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1598462930702" />
     <state x="1216" y="300" width="649" height="623" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1598564606125" />
-    <state x="438" y="80" width="1033" height="954" key="CommitChangelistDialog2" timestamp="1598549537470">
-      <screen x="0" y="27" width="1920" height="1053" />
+    <state x="584" y="52" width="1508" height="966" key="CommitChangelistDialog2" timestamp="1601060473682">
+      <screen x="0" y="0" width="2560" height="1040" />
     </state>
+    <state x="584" y="52" width="1508" height="966" key="CommitChangelistDialog2/0.0.2560.1040@0.0.2560.1040" timestamp="1601060473682" />
     <state x="438" y="80" width="1033" height="954" key="CommitChangelistDialog2/0.27.1920.1053@0.27.1920.1053" timestamp="1598549537470" />
     <state x="917" y="212" width="524" height="637" key="FileChooserDialogImpl" timestamp="1601059755090">
       <screen x="0" y="0" width="2560" height="1040" />
@@ -449,10 +453,15 @@
     </state>
     <state x="768" y="126" width="1040" height="864" key="SettingsEditor/0.0.2560.1040@0.0.2560.1040" timestamp="1601059859325" />
     <state x="651" y="126" width="1269" height="912" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1598548648904" />
-    <state x="455" y="226" width="1000" height="661" key="Vcs.Push.Dialog.v2" timestamp="1598549549373">
-      <screen x="0" y="27" width="1920" height="1053" />
+    <state x="607" y="197" width="1000" height="661" key="Vcs.Push.Dialog.v2" timestamp="1601060380547">
+      <screen x="0" y="0" width="2560" height="1040" />
     </state>
+    <state x="607" y="197" key="Vcs.Push.Dialog.v2/0.0.2560.1040@0.0.2560.1040" timestamp="1601060380547" />
     <state x="455" y="226" width="1000" height="661" key="Vcs.Push.Dialog.v2/0.27.1920.1053@0.27.1920.1053" timestamp="1598549549373" />
+    <state x="1105" y="257" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog" timestamp="1601060467957">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state x="1105" y="257" key="com.intellij.openapi.vcs.changes.SpecificFilesViewDialog/0.0.2560.1040@0.0.2560.1040" timestamp="1601060467957" />
     <state x="1116" y="52" width="1351" height="1026" key="dock-window-1" timestamp="1601045429786">
       <screen x="0" y="0" width="2560" height="1040" />
     </state>
