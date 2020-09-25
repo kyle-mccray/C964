@@ -14,6 +14,9 @@ import ml_main
 
 app = Flask(__name__)
 
+if __name__ == '__main__':
+    app.run()
+
 # Set the secret key to some random bytes. Keep this really secret!
 app.secret_key = "supersecretkey123"
 db = db_connection.Connection()
