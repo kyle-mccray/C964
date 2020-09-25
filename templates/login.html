@@ -7,7 +7,22 @@
     <title>Main Login</title>
 </head>
 <body>
+
+
+
 <form class="form-signin" , method="post">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
     <input name="username" type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
     <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>

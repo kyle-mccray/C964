@@ -6,7 +6,7 @@
 {% block site_title %} Data {% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div class="container-fluid">
         <div class="col-lg-12">
             <div class="col-xl">
                 <div id="bar">
@@ -30,20 +30,27 @@
 
 <script>
     var figure = {{ plot[0] | safe}};
-    var layout ={title:"This is the first graph"};
-    Plotly.newPlot('bar', figure, layout);
+    var layout ={
+        title: "This is the first graph",
+        xaxis: {title:"THIS IS THE X AXIS"},
+        yaxis: {title: "This is the Y axis"}
+    };
+    var config = {responsive: true};
+    Plotly.newPlot('bar', figure, layout, config);
 </script>
 
 <script>
     var figure = {{ plot[1] | safe}};
     var layout ={title:"This is second "};
-    Plotly.newPlot('line', figure, layout);
+    var config = {responsive: true};
+    Plotly.newPlot('line', figure, layout, config);
 </script>
 
 <script>
     var figure = {{ plot[2] | safe}};
     var layout ={title:"This is thrid"};
-    Plotly.newPlot('other', figure, layout);
+    var config = {responsive: true};
+    Plotly.newPlot('other', figure, layout, config);
 </script>
 
 
