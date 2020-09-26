@@ -48,7 +48,7 @@ def user_exists():
     )
     result = db.cur.fetchone()
     if result is not None:
-        if check_password_hash(result['password'], input_password) == True:
+        if check_password_hash(result[1], input_password):
             print("User logged in")
             session['username'] = input_username
             return True
