@@ -25,9 +25,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link active" href="homepage">Home<span class="sr-only">(current)</span></a>
+                <a class="nav-link active" href="home">Home<span class="sr-only">(current)</span></a>
                 <a class="nav-link" href="data">Data</a>
-                <a class="nav-link" href="login">Logout</a>
+                <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
             </div>
         </div>
     </nav>

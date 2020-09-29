@@ -1,25 +1,56 @@
+import os
 from _plotly_utils.utils import PlotlyJSONEncoder
-from flask import Flask, session, redirect, url_for, request, render_template, flash
-import plotly
+from flask import Flask, redirect, url_for, request, render_template, flash, abort
 import plotly.graph_objs as go
-import plotly.express as px
 import pandas as pd
 import numpy as np
 import json
-import db_connection
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, login_required, current_user, logout_user, UserMixin, login_user
+from werkzeug.security import check_password_hash
 from joblib import load
+from flask_sqlalchemy import SQLAlchemy
 import ml_main
 
-
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 if __name__ == "__main__":
     app.run()
 
-# Set the secret key to some random bytes. Keep this really secret!
-app.secret_key = "supersecretkey123"
-db = db_connection.Connection()
+app.secret_key = "hzxcv,mndskljhxcvqwe13"
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# DATABASE_URL = os.environ['DATABASE_URL']
+local = 'postgresql+psycopg2://server:admin@localhost:5432/flask'
+app.config['SQLALCHEMY_DATABASE_URI'] = local
+
+db = SQLAlchemy(app)
+
+
+class User(UserMixin, db.Model):
+    __tablename__ = 'accounts'
+    username = db.Column(db.String(50), primary_key=True)
+    password = db.Column(db.String(200))
+
+    def get_id(self):
+        return self.username
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.session_protection = "strong"
+
+
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    return redirect('/login?next=' + request.path)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id is not None:
+        return User.query.get(user_id)
+    return None
+
+
 
 
 @app.route('/')
@@ -30,57 +61,42 @@ def index():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        if user_exists() == True:
-            return redirect(url_for('homepage'))
-        else:
+        input_username = request.form['username']
+        input_password = request.form['password']
+        user = User.query.filter_by(username=input_username).first()
+        if user:
+            if check_password_hash(user.password, input_password):
+                print("Logging in")
+                login_user(user)
+                next_page = request.args.get('next')
+                return redirect(next_page or url_for('home'))
+
             flash("Wrong Username or Password")
-            print("wrong username or password")
+        return redirect(url_for('login'))
+
     return render_template('login.html')
 
 
-def user_exists():
-    input_username = request.form['username']
-    input_password = request.form['password']
-    db.cur.execute(
-        """
-    select username, password from accounts where username = %s;
-    """, [input_username, ]
-    )
-    result = db.cur.fetchone()
-    if result is not None:
-        if check_password_hash(result[1], input_password):
-            print("User logged in")
-            session['username'] = input_username
-            return True
-    return False
-
-
 @app.route('/logout')
+@login_required
 def logout():
-    # remove the username from the session if it's there
-    session.pop('username', None)
+    print("User logged out")
+    logout_user()
     return redirect(url_for('login'))
 
 
 @app.route('/data')
+@login_required
 def data():
-    db.cur.execute(
-        """
-    select * from bike_data;
-    """
-    )
-    result = db.cur.fetchall()
-
+    result = db.engine.execute("select * from bike_data;")
     col = ['Date', 'Rented Bike Count', 'Hour', 'Temperature(C)', 'Humidity(%)',
            'Wind speed (m/s)', 'Visibility (10m)', 'Dew point temperature(C)',
            'Solar Radiation (MJ/m2)', 'Rainfall(mm)', 'Snowfall (cm)', 'Seasons',
            'Holiday', 'Functioning Day']
 
     db_data = pd.DataFrame(data=result, columns=col)
-
     plots = create_plots(df=db_data)
-
-    return render_template("data.html", plot=plots)
+    return render_template('data.html', plot=plots)
 
 
 def create_plots(df):
@@ -114,8 +130,9 @@ def create_plots(df):
     return plots
 
 
-@app.route('/homepage', methods=['GET', 'POST'])
-def homepage():
+@app.route('/home', methods=['GET', 'POST'])
+@login_required
+def home():
     if request.method == 'POST':
         hour = request.form['hourSelect']
         month = request.form['monthSelect']
@@ -154,10 +171,9 @@ def homepage():
             pipe = load(open(filename, 'rb'))
             print(pipe.predict(df))
 
-        except Exception:
+        except FileNotFoundError:
             print("An error has occurred")
             print("Retraining Model this might take a bit")
             ml_main.main()
 
-
-    return render_template('homepage.html')
+    return render_template('home.html')
