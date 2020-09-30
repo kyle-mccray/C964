@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block site_title %}Home{% endblock %}
+{% block head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}
 {% block body %}
     <div class="container">
         <div class="col-lg-12">
@@ -7,12 +10,34 @@
         </div>
     </div>
 
+
+    <!-- Modal -->
+    <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Placeholder</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                   <p id="modalParagraph">placeholder</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="col-md-12">
-            <form method="post">
+            <form name="bike-form" method="post">
                 <div class="form-group">
                     <label>Hour</label>
-                    <select class="form-control" name="hourSelect">
+                    <select class="form-control" id="hourSelect" name="hour">
                         <option>0</option>
                         <option>1</option>
                         <option>2</option>
@@ -41,7 +66,7 @@
                 </div>
                 <div class="form-group">
                     <label for="exampleFormControlSelect1">Month</label>
-                    <select class="form-control" name="monthSelect">
+                    <select class="form-control" id="monthSelect" name="month">
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -59,35 +84,69 @@
                 <div class="form-group">
                     <label for="customRange1">Humidity(%)</label>
                     <input type="range" class="custom-range" min="0" max="100" step="0.5"
-                           name="humidityID" onchange="updateTextInput(this.value);" value="50" required>
+                           id="humidityID" onchange="updateTextInput(this.value);" value="50" name="humidity" required>
                     <input type="text" id="humidityPercent" value="50%" disabled>
 
                 </div>
                 <div class="form-row">
                     <div class="form-group col-md-4">
                         <label>Temperature(°C)</label>
-                        <input type="number" step="any" class="form-control" name="tempID"  required>
+                        <input type="number" step="any" class="form-control" id="tempID" name="temp" required>
                     </div>
                     <div class="form-group col-md-4">
                         <label>Snowfall(cm)</label>
-                        <input type="number" step="any" class="form-control" value="0" name="snowID" required>
+                        <input type="number" step="any" class="form-control" value="0" id="snowID" name="snow" required>
                     </div>
                     <div class="form-group col-md-4">
                         <label>Rainfall(mm)</label>
-                        <input type="number" step="any" class="form-control" value="0"  name="rainID" required>
+                        <input type="number" step="any" class="form-control" value="0"  id="rainID" name="rain" required>
                     </div>
                 </div>
                 <div class="form-group">
-                    <button class="form-control" id="mlSubmit">Submit</button>
+                    <button class="form-control" type="submit" id="mlSubmit">Submit</button>
                 </div>
             </form>
         </div>
     </div>
-    <div class="container">
-        <label>Bikes needed</label>
-        <input type="text" disabled>
-    </div>
 
+    <script>
+    $('#mlSubmit').click(function(event){
+        calcBikes(event);
+    });
+    function calcBikes(event){
+        event.preventDefault();
+        $.ajax({
+            data: {
+                hour: $('#hourSelect').val(),
+                month: $('#monthSelect').val(),
+                humidity: $('#humidityID').val(),
+                temp: $('#tempID').val(),
+                snow: $('#snowID').val(),
+                rain: $('#rainID').val()
+            },
+            url: "/process",
+            type: 'POST'
+        })
+            .done(function (data) {
+                if (data.error) {
+                    var title = "Error";
+                    var message = data.error;
+                    console.error("SOMETHING WENT WRONG");
+                }
+                else{
+                    title = "Results";
+                    message = data.result;
+                    message = message + ": Bikes are needed";
+                    console.log("WE GOOD");
+                }
+                document.getElementById("modalTitle").innerHTML = title;
+                document.getElementById("modalParagraph").innerHTML = message;
+                $('#resultModal').modal('show');
+
+            });
+
+    }
+    </script>
     <script>
         function updateTextInput(val) {
             document.getElementById('humidityPercent').value=val+'%';

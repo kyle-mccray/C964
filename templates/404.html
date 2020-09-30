@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block site_title %}404{% endblock %}
+{% block body %}
+    <meta charset="UTF-8">
+    <title>404</title>
+    <div class="container">
+        <h1>Page not found</h1>
+        <br>
+        <a href="{{ url_for('home') }}"> <button type="button" class="btn btn-primary">Return Home</button></a>
+    </div>
+{% endblock %}

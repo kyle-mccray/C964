@@ -58,13 +58,11 @@ def main():
     y = df[target]
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=RANDOM_STATE)
-
     filename = 'final_model.joblib'
-
     try:
         pipe = load(open(filename, 'rb'))
 
-    except Exception:
+    except FileNotFoundError:
         print("An error has occurred")
         pipe = Pipeline([('scaler', StandardScaler()), ('pca', PCA(n_components='mle', random_state=RANDOM_STATE)),
                          ('mlp', MLPRegressor(hidden_layer_sizes=(100, 100, 100, 100, 100, 100, 100),
@@ -89,8 +87,6 @@ def main():
     print(median_absolute_error(expected_y, predicted_y))
     print(mean_absolute_error(expected_y, predicted_y))
     print(mean_squared_error(expected_y, predicted_y))
-
-
 
 
 main()
