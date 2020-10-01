@@ -105,6 +105,8 @@ def data():
 
 
 def create_plots(df):
+    df[['Day', 'Month', 'Year']] = df['Date'].str.split('/', expand=True)
+
     plots = []
     data = [
         go.Scatter(
@@ -115,7 +117,7 @@ def create_plots(df):
     plots.append(json.dumps(data, cls=PlotlyJSONEncoder))
 
     data_2 = [
-        go.Bar(
+        go.Histogram2dContour(
             x=df['Date'],
             y=df['Rented Bike Count']
         )
