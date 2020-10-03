@@ -3,10 +3,12 @@ from math import floor, ceil
 from _plotly_utils.utils import PlotlyJSONEncoder
 from flask import Flask, redirect, url_for, request, render_template, flash, jsonify, make_response
 import plotly.graph_objs as go
+import plotly.express as px
 import pandas as pd
 import numpy as np
 import json
 from flask_login import LoginManager, login_required, logout_user, UserMixin, login_user
+from sqlalchemy import text
 from werkzeug.security import check_password_hash
 from joblib import load
 from flask_sqlalchemy import SQLAlchemy
@@ -101,34 +103,57 @@ def data():
 
     db_data = pd.DataFrame(data=result, columns=col)
     plots = create_plots(df=db_data)
-    return render_template('data.html', plot=plots)
+    return render_template('data.html', plots=plots)
 
 
 def create_plots(df):
     df[['Day', 'Month', 'Year']] = df['Date'].str.split('/', expand=True)
-
+    sum_df = pd.DataFrame(data=df.groupby(['Month', 'Year'])['Rented Bike Count'].sum(),
+                          columns=['Month', 'Bike Count'])
+    result = db.engine.execute(
+        "select split_part(date_recorded, '/', 1) as day, split_part(date_recorded, '/', 2) as month,"
+        "split_part(date_recorded, '/', 3) as year, avg(temperature) as t, sum(rented_bikes) as "
+        "count from bike_data group by 1,2,3 order by 3, 2, 1;")
+    date = []
+    count = []
+    temp = []
+    for x in result:
+        date.append(str(x['day']) + "/" + str(x['month']) + "/" + str(x['year']))
+        count.append(x['count'])
+        temp.append(ceil(x['t']))
+    scatter_df = pd.DataFrame()
+    scatter_df['Date'] = date
+    scatter_df['Bike Count'] = count
+    scatter_df['temp'] = temp
     plots = []
     data = [
-        go.Scatter(
-            x=df['Date'],
-            y=df['Rented Bike Count']
-        )
+        go.Scatter(x=scatter_df['Date'],
+                   y=scatter_df['Bike Count'],
+                   mode="markers",
+                   marker=dict(color='#838df9')
+
+                   )
+
     ]
     plots.append(json.dumps(data, cls=PlotlyJSONEncoder))
 
     data_2 = [
-        go.Histogram2dContour(
-            x=df['Date'],
-            y=df['Rented Bike Count']
+        go.Bar(
+            y=scatter_df['temp'],
+            x=scatter_df['Bike Count'],
+            orientation='h',
+            marker=dict(color='#ec7a69')
+
         )
     ]
-
+    #
     plots.append(json.dumps(data_2, cls=PlotlyJSONEncoder))
 
     data_3 = [
         go.Histogram(
-            x=df['Date'],
-            y=df['Rented Bike Count']
+            y=df['Rented Bike Count'],
+            marker=dict(color='#636efa')
+
         )
     ]
 
@@ -191,6 +216,19 @@ def process():
     except FileNotFoundError:
         print("An error has occurred")
         print("Retraining Model this might take a bit")
-        resp = {'error': "An error has occurred retraining model"}
+        resp = {'error': "An Error Has Occurred Retraining Model This Might Take a Bit"}
         ml_main.main()
         return jsonify(resp)
+
+
+@app.route('/fetch', methods=['GET'])
+@login_required
+def fetch():
+    r = request.args
+    offset = r.get(key='offset')
+    limit = r.get(key='limit')
+    row_count = db.engine.execute('select count(*) from bike_data;').fetchone()
+    statment = text("""select * from bike_data offset :x rows fetch next :y rows only""")
+    raw_result = db.engine.execute(statment, x=offset, y=limit).fetchall()
+    result = {'total': int(*row_count),  'rows': [dict(row) for row in raw_result]}
+    return jsonify(result)

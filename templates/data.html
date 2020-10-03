@@ -1,7 +1,17 @@
 {% extends "base.html" %}
 {% block head %}
-<link rel="stylesheet" type="text/css" href="/static/data-style.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.css">
+    <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free.min.css">
+    <link href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel="stylesheet">
+
+    <!-- JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js"></script>
+    <script src="https://unpkg.com/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.min.js"></script>
+
+
+
 {% endblock %}
 
 {% block site_title %} Data {% endblock %}
@@ -24,39 +34,105 @@
 
                 </div>
             </div>
-
         </div>
+    </div>
+    <div class="container-fluid">
+        <div class="col-xl">
+            <table id="seoulDataTable"
+                   data-search="false"
+                   data-show-columns="true"
+                   data-show-toggle="true"
+                   data-show-refresh="true"
+                   data-ajax="ajaxRequest"
+                   data-button-class="primary"
+                   data-pagination="true"
+                   data-resizable="true"
+                   data-reorderable-columns="true"
+            >
+                <thead>
+                <tr>
+                    <th data-field="date_recorded" data-sortable="true">Date (dd/mm/yy)</th>
+                    <th data-field="rented_bikes" data-sortable="true">Bikes Rented</th>
+                    <th data-field="hour_recored" data-sortable="true">Hour</th>
+                    <th data-field="temperature" data-sortable="true">Temperature(°C)</th>
+                    <th data-field="humidity" data-sortable="true">Humidity%</th>
+                    <th data-field="wind_speed" data-sortable="true">Wind Speed</th>
+                    <th data-field="visibility" data-sortable="true">Visibility</th>
+                    <th data-field="dewpoint" data-sortable="true">Dewpoint</th>
+                    <th data-field="solar_radiation" data-sortable="true">Solar Radiation</th>
+                    <th data-field="rainfall" data-sortable="true">Rainfall(mm)</th>
+                    <th data-field="snowfall" data-sortable="true">Snowfall(cm)</th>
+                    <th data-field="seasons" data-sortable="true">Season</th>
+                    <th data-field="holiday" data-sortable="true">Holiday</th>
+                    <th data-field="functioning_day" data-sortable="true">Open</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
     </div>
 
 
+
+
 <script>
-    var figure = {{ plot[0] | safe}};
-    var layout ={
-        title: "This is the first graph",
-        xaxis: {title:"THIS IS THE X AXIS"},
-        yaxis: {title: "This is the Y axis"}
+    var figure = {{ plots[0] | safe }};
+    var layout = {
+        margin: {b:110},
+        title: "Bikes Used vs Date",
+        xaxis: {title: "Date"},
+        yaxis: {title: "Number of Bikes Used"}
     };
     var config = {responsive: true};
     Plotly.newPlot('bar', figure, layout, config);
 </script>
 
 <script>
-    var figure = {{ plot[1] | safe}};
-    var layout ={title:"This is second "};
+    var figure = {{ plots[1] | safe}};
+    var layout ={title:"Temperature vs Bikes Used",
+        xaxis: {title: "Bikes Used"},
+        yaxis: {title: "Temperature(°C)"}
+    };
     var config = {responsive: true};
     Plotly.newPlot('line', figure, layout, config);
 </script>
 
 <script>
-    var figure = {{ plot[2] | safe}};
-    var layout ={title:"This is thrid"};
+    var figure = {{ plots[2] | safe}};
+    var layout ={title:"Bikes Used vs Frequency",
+        xaxis: {title: "Frequency"},
+        yaxis: {title: "Number of Bikes"},
+
+
+    };
     var config = {responsive: true};
     Plotly.newPlot('other', figure, layout, config);
 </script>
 
+<script>
+    // your custom ajax request here
+    function ajaxRequest(params) {
+        var url = '/fetch';
+        $.get(url + '?' + $.param(params.data)).then(function (res){
+            params.success(res)
+        })
+
+    }
+
+</script>
+
+
+    <script>
+        $(function() {
+            $('#seoulDataTable').bootstrapTable()
+        })
+    </script>
 
 
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+
+
 
 {% endblock %}
