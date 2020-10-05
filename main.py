@@ -202,7 +202,7 @@ def process():
                     'Functioning Day': 1
                     }, ignore_index=True)
 
-    print(df.head())
+
     filename = 'model.joblib'
     try:
         pipe = load(open(filename, 'rb'))
