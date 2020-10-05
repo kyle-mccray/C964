@@ -1,9 +1,8 @@
 import os
-from math import floor, ceil
+from math import ceil
 from _plotly_utils.utils import PlotlyJSONEncoder
-from flask import Flask, redirect, url_for, request, render_template, flash, jsonify, make_response
+from flask import Flask, redirect, url_for, request, render_template, flash, jsonify
 import plotly.graph_objs as go
-import plotly.express as px
 import pandas as pd
 import numpy as np
 import json
@@ -22,9 +21,9 @@ if __name__ == "__main__":
 app.secret_key = "hzxcv,mndskljhxcvqwe13"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-DATABASE_URL = os.environ['DATABASE_URL']
-#local = 'postgresql+psycopg2://server:admin@localhost:5432/flask'
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+# DATABASE_URL = os.environ['DATABASE_URL']
+local = 'postgresql+psycopg2://server:admin@localhost:5432/flask'
+app.config['SQLALCHEMY_DATABASE_URI'] = local
 
 db = SQLAlchemy(app)
 
@@ -73,11 +72,10 @@ def login():
         user = User.query.filter_by(username=input_username).first()
         if user:
             if check_password_hash(user.password, input_password):
-                print("Logging in")
                 login_user(user)
+                app.logger.info(" %s logged in", user.username)
                 next_page = request.args.get('next')
                 return redirect(next_page or url_for('home'))
-
             flash("Wrong Username or Password")
         return redirect(url_for('login'))
 
@@ -87,8 +85,8 @@ def login():
 @app.route('/logout')
 @login_required
 def logout():
-    print("User logged out")
     logout_user()
+    app.logger.info("User Logged Out", )
     return redirect(url_for('login'))
 
 
@@ -108,8 +106,6 @@ def data():
 
 def create_plots(df):
     df[['Day', 'Month', 'Year']] = df['Date'].str.split('/', expand=True)
-    sum_df = pd.DataFrame(data=df.groupby(['Month', 'Year'])['Rented Bike Count'].sum(),
-                          columns=['Month', 'Bike Count'])
     result = db.engine.execute(
         "select split_part(date_recorded, '/', 1) as day, split_part(date_recorded, '/', 2) as month,"
         "split_part(date_recorded, '/', 3) as year, avg(temperature) as t, sum(rented_bikes) as "
@@ -146,7 +142,7 @@ def create_plots(df):
 
         )
     ]
-    #
+
     plots.append(json.dumps(data_2, cls=PlotlyJSONEncoder))
 
     data_3 = [
@@ -173,11 +169,12 @@ def home():
 def process():
     hour = request.form['hour']
     month = request.form['month']
+    day = request.form['day']
     humidity = request.form['humidity']
     temp = request.form['temp']
     snow = request.form['snow']
     rain = request.form['rain']
-    df = pd.DataFrame(None, columns=['hr_cos', 'hr_sin', 'month_cos', 'month_sin',
+    df = pd.DataFrame(None, columns=['hr_cos', 'hr_sin', 'month_cos', 'month_sin', 'days_cos', 'days_sin',
                                      'seasons_cos', 'seasons_sin', 'Temperature(C)', 'Humidity(%)',
                                      'Rainfall(mm)', 'Snowfall (cm)', 'Functioning Day'])
 
@@ -196,6 +193,8 @@ def process():
                     'hr_sin': np.sin(int(hour) * (2 * np.pi / 24)),
                     'month_cos': np.cos((int(month) - 1) * (2 * np.pi / 12)),
                     'month_sin': np.sin((int(month) - 1) * (2 * np.pi / 12)),
+                    'days_cos': np.cos(int(day) * (2 * np.pi / 31)),
+                    'days_sin': np.sin(int(day) * (2 * np.pi / 31)),
                     'Temperature(C)': temp,
                     'Humidity(%)': humidity,
                     'Rainfall(mm)': rain,
@@ -203,19 +202,19 @@ def process():
                     'Functioning Day': 1
                     }, ignore_index=True)
 
-    filename = 'final_model.joblib'
+    print(df.head())
+    filename = 'model.joblib'
     try:
         pipe = load(open(filename, 'rb'))
         result = pipe.predict(df)
         int_result = int(result)
         str_result = str(ceil(int_result))
-        print("Bikes Needed: {}".format(result))
+        app.logger.info("Bikes Needed: {}".format(result))
         resp = {'result': str_result}
         return jsonify(resp)
 
     except FileNotFoundError:
-        print("An error has occurred")
-        print("Retraining Model this might take a bit")
+        app.logger.error("Model could not be found retraining model")
         resp = {'error': "An Error Has Occurred Retraining Model This Might Take a Bit"}
         ml_main.main()
         return jsonify(resp)
@@ -230,5 +229,5 @@ def fetch():
     row_count = db.engine.execute('select count(*) from bike_data;').fetchone()
     statment = text("""select * from bike_data offset :x rows fetch next :y rows only""")
     raw_result = db.engine.execute(statment, x=offset, y=limit).fetchall()
-    result = {'total': int(*row_count),  'rows': [dict(row) for row in raw_result]}
+    result = {'total': int(*row_count), 'rows': [dict(row) for row in raw_result]}
     return jsonify(result)

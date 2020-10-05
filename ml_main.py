@@ -43,10 +43,10 @@ def main():
     df['seasons_sin'] = np.sin((df['Seasons']) * (2 * np.pi / 4))
 
     df['Day'] = df['Day'].astype(int)
-    df['days_cos'] = np.cos((df['Day']) * (2 * np.pi / 30))
-    df['days_sin'] = np.sin((df['Day']) * (2 * np.pi / 30))
+    df['days_cos'] = np.cos((df['Day']) * (2 * np.pi / 31))
+    df['days_sin'] = np.sin((df['Day']) * (2 * np.pi / 31))
 
-    categories = ['hr_cos', 'hr_sin', 'month_cos', 'month_sin',
+    categories = ['hr_cos', 'hr_sin', 'month_cos', 'month_sin', 'days_cos', 'days_sin',
                   'seasons_cos', 'seasons_sin', 'Temperature(C)', 'Humidity(%)',
                   'Rainfall(mm)', 'Snowfall (cm)', 'Functioning Day']
 
@@ -58,7 +58,7 @@ def main():
     y = df[target]
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=RANDOM_STATE)
-    filename = 'final_model.joblib'
+    filename = 'model.joblib'
     try:
         pipe = load(open(filename, 'rb'))
 
