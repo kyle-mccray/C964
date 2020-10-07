@@ -1,5 +1,7 @@
 import os
 from math import ceil
+
+import sqlalchemy
 from _plotly_utils.utils import PlotlyJSONEncoder
 from flask import Flask, redirect, url_for, request, render_template, flash, jsonify
 import plotly.graph_objs as go
@@ -7,7 +9,8 @@ import pandas as pd
 import numpy as np
 import json
 from flask_login import LoginManager, login_required, logout_user, UserMixin, login_user
-from sqlalchemy import text
+from psycopg2 import sql
+from sqlalchemy import text, bindparam, literal_column, column, select
 from werkzeug.security import check_password_hash
 from joblib import load
 from flask_sqlalchemy import SQLAlchemy
@@ -21,9 +24,9 @@ if __name__ == "__main__":
 app.secret_key = '\xaeH\x041\xa3\x99.\xa3<uC\xfa`\x00\r\x9d>f-\xef\x1f\xed\xc9\x93'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-DATABASE_URL = os.environ['DATABASE_URL']
-#local = 'postgresql+psycopg2://server:admin@localhost:5432/flask'
-app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
+# DATABASE_URL = os.environ['DATABASE_URL']
+local = 'postgresql+psycopg2://server:admin@localhost:5432/flask'
+app.config['SQLALCHEMY_DATABASE_URI'] = local
 
 db = SQLAlchemy(app)
 
@@ -76,7 +79,8 @@ def login():
                 app.logger.info(" %s logged in", user.username)
                 next_page = request.args.get('next')
                 return redirect(next_page or url_for('home'))
-            flash("Wrong Username or Password")
+            flash("Wrong Username or Password")  # user was found password was wrong
+        flash("Wrong Username or Password")  # user was not found
         return redirect(url_for('login'))
 
     return render_template('login.html')
@@ -155,6 +159,18 @@ def create_plots(df):
 
     plots.append(json.dumps(data_3, cls=PlotlyJSONEncoder))
 
+    data_4 = [
+        go.Histogram2d(
+            x=df['Humidity(%)'],
+            y=df['Temperature(C)'],
+            z=df['Rented Bike Count'],
+            histfunc="avg"
+
+        )
+    ]
+
+    plots.append(json.dumps(data_4, cls=PlotlyJSONEncoder))
+
     return plots
 
 
@@ -202,7 +218,6 @@ def process():
                     'Functioning Day': 1
                     }, ignore_index=True)
 
-
     filename = 'model.joblib'
     try:
         pipe = load(open(filename, 'rb'))
@@ -226,8 +241,50 @@ def fetch():
     r = request.args
     offset = r.get(key='offset')
     limit = r.get(key='limit')
+    sort = r.get(key='sort')
+    order = r.get(key='order')
     row_count = db.engine.execute('select count(*) from bike_data;').fetchone()
-    statment = text("""select * from bike_data offset :x rows fetch next :y rows only""")
-    raw_result = db.engine.execute(statment, x=offset, y=limit).fetchall()
+    key = sort + "_" + order
+    queries = {
+        "date_recorded_asc": "select * from bike_data order by date_recorded asc",
+        "date_recorded_desc": "select * from bike_data order by date_recorded desc",
+        "rented_bikes_asc": "select * from bike_data order by rented_bikes asc",
+        "rented_bikes_desc": "select * from bike_data order by rented_bikes desc",
+        "hour_recored_asc": "select * from bike_data order by hour_recored asc",
+        "hour_recored_desc": "select * from bike_data order by hour_recored desc",
+        "temperature_asc": "select * from bike_data order by temperature asc",
+        "temperature_desc": "select * from bike_data order by temperature desc",
+        "humidity_asc": "select * from bike_data order by humidity asc",
+        "humidity_desc": "select * from bike_data order by humidity desc",
+        "wind_speed_asc": "select * from bike_data order by wind_speed asc",
+        "wind_speed_desc": "select * from bike_data order by wind_speed desc",
+        "visibility_asc": "select * from bike_data order by visibility asc",
+        "visibility_desc": "select * from bike_data order by visibility desc",
+        "dewpoint_asc": "select * from bike_data order by dewpoint asc",
+        "dewpoint_desc": "select * from bike_data order by dewpoint desc",
+        "solar_radiation_asc": "select * from bike_data order by solar_radiation asc",
+        "solar_radiation_desc": "select * from bike_data order by solar_radiation desc",
+        "rainfall_asc": "select * from bike_data order by rainfall asc",
+        "rainfall_desc": "select * from bike_data order by rainfall desc",
+        "snowfall_asc": "select * from bike_data order by snowfall asc",
+        "snowfall_desc": "select * from bike_data order by snowfall desc",
+        "seasons_asc": "select * from bike_data order by seasons asc",
+        "seasons_desc": "select * from bike_data order by seasons desc",
+        "holiday_asc": "select * from bike_data order by holiday asc",
+        "holiday_desc": "select * from bike_data order by holiday desc",
+        "functioning_day_asc": "select * from bike_data order by functioning_day asc",
+        "functioning_day_desc": "select * from bike_data order by functioning_day desc",
+    }
+    if order and sort:
+        statement = queries[key]
+        statement = text(statement + " offset :x rows fetch next :y rows only")
+        raw_result = db.engine.execute(statement, x=int(offset), y=int(limit)).fetchall()
+        # statement = text("""select * from bike_data offset :x rows fetch next :y rows only""")
+        # raw_result = db.engine.execute(statement, x=offset, y=limit).fetchall()
+        result = {'total': int(*row_count), 'rows': [dict(row) for row in raw_result]}
+        return jsonify(result)
+
+    statement = text("""select * from bike_data offset :x rows fetch next :y rows only""")
+    raw_result = db.engine.execute(statement, x=offset, y=limit).fetchall()
     result = {'total': int(*row_count), 'rows': [dict(row) for row in raw_result]}
     return jsonify(result)

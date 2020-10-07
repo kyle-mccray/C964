@@ -34,6 +34,11 @@
 
                 </div>
             </div>
+            <div class="col-xl">
+                <div id="humid">
+
+                </div>
+            </div>
         </div>
     </div>
     <div class="container-fluid">
@@ -46,6 +51,7 @@
                    data-ajax="ajaxRequest"
                    data-button-class="primary"
                    data-pagination="true"
+                   data-side-pagination="server"
                    data-resizable="true"
                    data-reorderable-columns="true"
             >
@@ -108,9 +114,19 @@
     var config = {responsive: true};
     Plotly.newPlot('other', figure, layout, config);
 </script>
+    <script>
+
+    var figure = {{ plots[3] | safe}};
+    var layout ={title:"Avg Bikes Used - Temperature vs Humidity",
+    xaxis: {title: "Humidity(%)"},
+    yaxis: {title: "Temperature(°C)"},
+    };
+    var config = {responsive: true};
+    Plotly.newPlot('humid', figure, layout, config);
+    </script>
 
 <script>
-    // your custom ajax request here
+
     function ajaxRequest(params) {
         var url = '/fetch';
         $.get(url + '?' + $.param(params.data)).then(function (res){

@@ -37,40 +37,21 @@
 
     <div class="container">
         <div class="col-md-12">
-            <form name="bike-form" method="post">
+            <form class="needs-validation" name="bike-form" method="post" novalidate>
                 <div class="form-group">
                     <label>Hour</label>
-                    <select class="form-control" id="hourSelect" name="hour">
-                        <option>0</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                        <option>7</option>
-                        <option>8</option>
-                        <option>9</option>
-                        <option>10</option>
-                        <option>11</option>
-                        <option>12</option>
-                        <option>13</option>
-                        <option>14</option>
-                        <option>15</option>
-                        <option>16</option>
-                        <option>17</option>
-                        <option>18</option>
-                        <option>19</option>
-                        <option>20</option>
-                        <option>21</option>
-                        <option>22</option>
-                        <option>23</option>
-                    </select>
+                    <input type="number" min=0 max=23 step="1" class="form-control" id="hourID" name="hour" required>
+                    <div class="invalid-feedback">
+                        Please Select an Hour between 0 and 23
+                    </div>
                 </div>
                 <div>
                     <label>
                         Date
                         <input data-provide="datepicker" class="form-control" name="date" id="dateID" required>
+                        <div class="invalid-feedback">
+                            Please Select a Date
+                        </div>
                     </label>
                 </div>
 
@@ -85,27 +66,53 @@
                     <div class="form-group col-md-4">
                         <label>Temperature(°C)</label>
                         <input type="number" step="any" class="form-control" id="tempID" name="temp" required>
+                        <div class="invalid-feedback">
+                            Please Enter a Temperature
+                        </div>
                     </div>
                     <div class="form-group col-md-4">
                         <label>Snowfall(cm)</label>
                         <input type="number" step="any" class="form-control" value="0" id="snowID" name="snow" required>
+                        <div class="invalid-feedback">
+                            Please Enter a Number E.g. 0
+                        </div>
                     </div>
                     <div class="form-group col-md-4">
                         <label>Rainfall(mm)</label>
                         <input type="number" step="any" class="form-control" value="0"  id="rainID" name="rain" required>
+                        <div class="invalid-feedback">
+                            Please Enter a Number E.g. 0
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <button class="form-control" type="submit" id="mlSubmit">Submit</button>
-                </div>
+                <button class="btn btn-primary btn-block" type="submit">Submit</button>
             </form>
         </div>
     </div>
 
+
     <script>
-    $('#mlSubmit').click(function(event){
-        calcBikes(event);
-    });
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                let forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                let validation = Array.prototype.filter.call(forms, function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        if (form.checkValidity() === true){calcBikes(event)}
+
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+    <script>
     function calcBikes(event){
         event.preventDefault();
         let date = $('#dateID').val();
@@ -114,7 +121,7 @@
         let day = date_arr[1];
         $.ajax({
             data: {
-                hour: $('#hourSelect').val(),
+                hour: $('#hourID').val(),
                 month: month,
                 day : day,
                 humidity: $('#humidityID').val(),
@@ -124,27 +131,26 @@
             },
             url: "/process",
             type: 'POST'
-        })
-            .done(function (data) {
-                if (data.error) {
-                    var title = "Error";
-                    var message = data.error;
-
-                }
+        }).done(function (data) {
+            let message;
+            let title;
+            if (data.error) {
+                title = "Error";
+                message = data.error;
+            }
                 else{
                     title = "Results";
                     message = data.result;
                     message = "Bikes needed: " + message;
-
                 }
                 document.getElementById("modalTitle").innerHTML = title;
                 document.getElementById("modalParagraph").innerHTML = message;
                 $('#resultModal').modal('show');
+        })
+        }
 
-            });
-
-    }
     </script>
+
     <script>
         function updateTextInput(val) {
             document.getElementById('humidityPercent').value=val+'%';
