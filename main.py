@@ -24,9 +24,9 @@ if __name__ == "__main__":
 app.secret_key = '\xaeH\x041\xa3\x99.\xa3<uC\xfa`\x00\r\x9d>f-\xef\x1f\xed\xc9\x93'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# DATABASE_URL = os.environ['DATABASE_URL']
-local = 'postgresql+psycopg2://server:admin@localhost:5432/flask'
-app.config['SQLALCHEMY_DATABASE_URI'] = local
+DATABASE_URL = os.environ['DATABASE_URL']
+#local = 'postgresql+psycopg2://server:admin@localhost:5432/flask'
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 
 db = SQLAlchemy(app)
 
